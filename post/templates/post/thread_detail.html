@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>{{ thread.name }}</h1>
+    <p>{{ thread.description }}</p>
+
+    <h2>Posts:</h2>
+    <ul>
+        {% for post in posts %}
+        <li>{{ post.title }} by {{ post.author }}</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'post_create' thread.id %}" class="btn btn-primary">Add Post</a>
+    <a href="{% url 'thread_delete' thread.id %}" class="btn btn-danger">Delete Thread</a>
+</div>
+{% endblock %}
