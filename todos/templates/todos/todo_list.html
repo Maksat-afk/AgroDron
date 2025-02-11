@@ -1,0 +1,15 @@
+{% extends 'todos/base.html' %}
+
+{% block title %}Список задач{% endblock %}
+
+{% block content %}
+    <a href="{% url 'todo_create' %}" class="btn">➕ Добавить задачу</a>
+    <ul>
+        {% for todo in todos %}
+            <li>
+                <a href="{% url 'todo_detail' todo.id %}">{{ todo.title }}</a>
+                <a href="{% url 'todo_delete' todo.id %}" class="delete-btn" onclick="return confirmDelete();">🗑 Удалить</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
