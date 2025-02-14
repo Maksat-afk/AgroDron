@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1 class="text-center">{{ todo_list.title }}</h1>
+    <p>{{ todo_list.description }}</p>
+
+    <h3>Задачи:</h3>
+    <ul class="list-group">
+        {% for todo in todos %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span>{{ todo.title }} — {{ todo.due_date }} ({{ todo.status|yesno:"✅,❌" }})</span>
+            <div>
+                <a href="{% url 'edit_todo' todo.id %}" class="btn btn-sm btn-warning">✏️</a>
+                <a href="{% url 'delete_todo' todo.id %}" class="btn btn-sm btn-danger">🗑️</a>
+            </div>
+        </li>
+        {% empty %}
+        <p>Нет задач.</p>
+        {% endfor %}
+    </ul>
+
+    <h3 class="mt-4">Добавить задачу:</h3>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Добавить</button>
+    </form>
+
+    <a href="{% url 'todo_lists' %}" class="btn btn-secondary mt-3">Назад</a>
+</div>
+{% endblock %}
