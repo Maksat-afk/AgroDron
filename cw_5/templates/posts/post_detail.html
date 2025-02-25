@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>{{ post.title }}</h1>
+    {% if post.picture %}
+        <img src="{{ post.picture.url }}" alt="{{ post.title }}" width="300">
+    {% endif %}
+    <p>{{ post.description }}</p>
+    <p><strong>Автор:</strong> {{ post.author.username }}</p>
+    <p><strong>Дата публикации:</strong> {{ post.created_at }}</p>
+    <a href="{% url 'posts_list' %}">← Назад к постам</a>
+{% endblock %}

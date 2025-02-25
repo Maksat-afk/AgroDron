@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2 class="text-center">Вход</h2>
+    <div class="d-flex justify-content-center">
+        <form method="POST" class="w-50 border p-4 bg-white rounded">
+            {% csrf_token %}
+            <label>Имя пользователя:</label>
+            <input type="text" name="username" class="form-control" required>
+            <label>Пароль:</label>
+            <input type="password" name="password" class="form-control" required>
+            <button type="submit" class="btn btn-primary w-100 mt-3">Войти</button>
+        </form>
+    </div>
+    <p class="text-center mt-3">Нет аккаунта? <a href="{% url 'register' %}">Зарегистрируйтесь</a></p>
+{% endblock %}

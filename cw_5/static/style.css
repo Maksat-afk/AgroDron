@@ -1,0 +1,15 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+h1 {
+    color: #343a40;
+}
+
+.card {
+    border-radius: 10px;
+}
+
+.card-body {
+    padding: 20px;
+}
