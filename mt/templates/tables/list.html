@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Список столов</h2>
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>ID</th>
+                <th>Номер</th>
+                <th>Мест</th>
+                <th>Доступность</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for table in tables %}
+            <tr>
+                <td>{{ table.id }}</td>
+                <td>{{ table.number }}</td>
+                <td>{{ table.seats }}</td>
+                <td>
+                    {% if table.is_available %}
+                        <span class="badge bg-success text-white">Свободен</span>
+                    {% else %}
+                        <span class="badge bg-danger text-white">Занят</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
