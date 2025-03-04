@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Список задач{% endblock %}
+{% block content %}
+    <h1 class="mb-4">Мои задачи</h1>
+    <ul class="list-group">
+        {% for todo in todos %}
+            <li class="list-group-item d-flex justify-content-between">
+                <a href="{% url 'todo_detail' todo.id %}">{{ todo.title }}</a>
+                <a href="{% url 'delete_todo' todo.id %}" class="btn btn-danger btn-sm">Удалить</a>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'create_todo' %}" class="btn btn-primary mt-3">Добавить задачу</a>
+{% endblock %}

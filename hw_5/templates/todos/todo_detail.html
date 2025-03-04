@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>{{ todo.title }}</h2>
+<p>{{ todo.description }}</p>
+<p>Срок: {{ todo.due_date }}</p>
+<p>Статус: {% if todo.status %}Выполнено{% else %}Не выполнено{% endif %}</p>
+<a href="{% url 'todos' %}" class="btn btn-secondary">Назад</a>
+{% endblock %}
