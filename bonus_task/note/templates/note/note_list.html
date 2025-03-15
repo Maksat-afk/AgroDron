@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+        <h2 class="mb-0">📌 Список заметок</h2>
+    </div>
+    <div class="card-body">
+        {% if notes %}
+            <ul class="list-group">
+                {% for note in notes %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <a href="{% url 'note_detail' note.id %}" class="text-decoration-none">{{ note.title }}</a>
+                        <small class="text-muted">{{ note.created_at }}</small>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="text-muted">Заметок пока нет.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-header bg-danger text-white">
+        <h2 class="mb-0">⚠️ Удалить заметку?</h2>
+    </div>
+    <div class="card-body">
+        <p>Вы уверены, что хотите удалить заметку <strong>"{{ note.title }}"</strong>?</p>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Да, удалить</button>
+            <a href="{% url 'note_list' %}" class="btn btn-secondary">⬅️ Отмена</a>
+        </form>
+    </div>
+</div>
+{% endblock %}
