@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Мини-Блог</title>
+</head>
+<body>
+    <h1>Мини-Блог</h1>
+
+    <h2>Создать новый пост</h2>
+    <form id="create-post-form">
+        <input type="text" id="post-title" placeholder="Заголовок" required><br>
+        <textarea id="post-content" placeholder="Контент" required></textarea><br>
+        <button type="submit">Создать</button>
+    </form>
+
+    <hr>
+
+    <h2>Все посты</h2>
+    <div id="posts-container"></div>
+
+    <script>
+        const token = localStorage.getItem('token');  // сохраняй токен после логина
+
+        async function loadPosts() {
+            const response = await fetch('/api/posts/', {
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+            });
+            const posts = await response.json();
+            const container = document.getElementById('posts-container');
+            container.innerHTML = '';
+
+            for (let post of posts) {
+                const postDiv = document.createElement('div');
+                postDiv.innerHTML = `
+                    <h3>${post.title}</h3>
+                    <p>${post.content}</p>
+                    <small>Автор: ${post.author}</small><br>
+                    <form onsubmit="addComment(event, ${post.id})">
+                        <input type="text" name="comment" placeholder="Комментарий..." required>
+                        <button type="submit">Отправить</button>
+                    </form>
+                    <div id="comments-${post.id}"></div>
+                    <button onclick="loadComments(${post.id})">Показать комментарии</button>
+                    <hr>
+                `;
+                container.appendChild(postDiv);
+            }
+        }
+
+        document.getElementById('create-post-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const title = document.getElementById('post-title').value;
+            const content = document.getElementById('post-content').value;
+
+            const response = await fetch('/api/posts/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                },
+                body: JSON.stringify({ title, content })
+            });
+
+            if (response.ok) {
+                document.getElementById('post-title').value = '';
+                document.getElementById('post-content').value = '';
+                loadPosts();
+            } else {
+                alert('Ошибка при создании поста');
+            }
+        });
+
+        async function addComment(e, postId) {
+            e.preventDefault();
+            const form = e.target;
+            const content = form.comment.value;
+
+            const response = await fetch('/api/comments/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                },
+                body: JSON.stringify({ post: postId, content })
+            });
+
+            if (response.ok) {
+                form.reset();
+                loadComments(postId);
+            } else {
+                alert('Ошибка при добавлении комментария');
+            }
+        }
+
+        async function loadComments(postId) {
+            const response = await fetch('/api/comments/?post=' + postId, {
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+            });
+            const comments = await response.json();
+            const container = document.getElementById(`comments-${postId}`);
+            container.innerHTML = '<b>Комментарии:</b><br>';
+            for (let comment of comments) {
+                container.innerHTML += `<p>${comment.content} <small>(автор: ${comment.author})</small></p>`;
+            }
+        }
+
+        loadPosts();
+    </script>
+</body>
+</html>
